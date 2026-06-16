@@ -1085,5 +1085,520 @@ form.addEventListener('submit', async e => {
 });
 </script>
 
+<!-- ═══════════════════════════════════════════
+     VERA — TruthScan AI Chat Agent
+     Powered by OpenAI gpt-4o-mini
+     Leads delivered via Formspree
+═══════════════════════════════════════════ -->
+
+<style>
+/* ── VERA WIDGET STYLES ── */
+#vera-launcher {
+  position: fixed;
+  bottom: 28px; right: 28px;
+  z-index: 9000;
+  width: 58px; height: 58px;
+  background: #00E676;
+  border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 0 0 rgba(0,230,118,0.5);
+  animation: vera-ping 2.5s ease-in-out infinite;
+  transition: background .2s, transform .15s;
+}
+#vera-launcher:hover { background: #00C853; transform: scale(1.07); }
+@keyframes vera-ping {
+  0%,100% { box-shadow: 0 0 0 0 rgba(0,230,118,0.45); }
+  60%      { box-shadow: 0 0 0 14px rgba(0,230,118,0); }
+}
+.vera-launcher-icon { font-size: 24px; line-height: 1; }
+.vera-notif {
+  position: absolute; top: -4px; right: -4px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #FF5252;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 700;
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+}
+
+#vera-panel {
+  position: fixed;
+  bottom: 100px; right: 28px;
+  z-index: 9001;
+  width: 370px;
+  max-height: 580px;
+  background: #0B100D;
+  border: 1px solid rgba(0,230,118,0.25);
+  display: flex; flex-direction: column;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+  transform: scale(0.92) translateY(20px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform .25s cubic-bezier(.34,1.56,.64,1), opacity .2s;
+}
+#vera-panel.open {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+  pointer-events: all;
+}
+
+.vera-head {
+  padding: 14px 16px;
+  background: #0F1511;
+  border-bottom: 1px solid rgba(0,230,118,0.12);
+  display: flex; align-items: center; gap: 10px;
+  flex-shrink: 0;
+}
+.vera-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(0,230,118,0.12);
+  border: 1.5px solid #00E676;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px; font-weight: 700; color: #00E676;
+  flex-shrink: 0;
+}
+.vera-head-info { flex: 1; }
+.vera-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px; font-weight: 700; color: #E2EDE4;
+}
+.vera-status {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: #6B8F72;
+  display: flex; align-items: center; gap: 5px;
+  margin-top: 1px;
+}
+.vera-status::before {
+  content: '';
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #00E676;
+  animation: pulse 1.5s infinite;
+  flex-shrink: 0;
+}
+.vera-close {
+  background: none; border: none; cursor: pointer;
+  color: #2E4733; font-size: 18px; line-height: 1;
+  padding: 4px; transition: color .2s;
+}
+.vera-close:hover { color: #E2EDE4; }
+
+.vera-msgs {
+  flex: 1; overflow-y: auto;
+  padding: 16px 14px;
+  display: flex; flex-direction: column;
+  gap: 10px;
+  scroll-behavior: smooth;
+}
+.vera-msgs::-webkit-scrollbar { width: 4px; }
+.vera-msgs::-webkit-scrollbar-track { background: transparent; }
+.vera-msgs::-webkit-scrollbar-thumb { background: rgba(0,230,118,0.2); border-radius: 2px; }
+
+.vmsg {
+  display: flex; gap: 8px; align-items: flex-end;
+  max-width: 92%;
+}
+.vmsg.vera { align-self: flex-start; }
+.vmsg.user { align-self: flex-end; flex-direction: row-reverse; }
+
+.vmsg-av {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: rgba(0,230,118,0.1);
+  border: 1px solid rgba(0,230,118,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; font-weight: 700; color: #00E676;
+  flex-shrink: 0;
+}
+.vmsg-bubble {
+  padding: 10px 13px;
+  font-size: 13px; line-height: 1.55;
+  border-radius: 0;
+  max-width: 100%;
+}
+.vmsg.vera .vmsg-bubble {
+  background: #131A15;
+  color: #C8DCC9;
+  border: 1px solid rgba(0,230,118,0.1);
+  border-bottom-left-radius: 0;
+}
+.vmsg.user .vmsg-bubble {
+  background: rgba(0,230,118,0.12);
+  color: #E2EDE4;
+  border: 1px solid rgba(0,230,118,0.2);
+}
+
+.vera-typing {
+  display: flex; gap: 4px; align-items: center;
+  padding: 12px 13px;
+  background: #131A15;
+  border: 1px solid rgba(0,230,118,0.1);
+  align-self: flex-start;
+}
+.vera-typing span {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: #00E676; opacity: 0.4;
+  animation: tdot 1.2s infinite;
+}
+.vera-typing span:nth-child(2) { animation-delay: .2s; }
+.vera-typing span:nth-child(3) { animation-delay: .4s; }
+@keyframes tdot { 0%,80%,100%{opacity:.2;transform:scale(.8)} 40%{opacity:1;transform:scale(1)} }
+
+.vera-foot {
+  flex-shrink: 0;
+  border-top: 1px solid rgba(0,230,118,0.1);
+  padding: 10px 12px;
+  display: flex; gap: 8px; align-items: flex-end;
+  background: #0B100D;
+}
+#vera-input {
+  flex: 1;
+  background: #0F1511;
+  border: 1px solid rgba(0,230,118,0.15);
+  color: #E2EDE4;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  padding: 9px 12px;
+  outline: none;
+  resize: none;
+  max-height: 90px;
+  line-height: 1.5;
+  transition: border-color .2s;
+  border-radius: 0;
+}
+#vera-input:focus { border-color: rgba(0,230,118,0.4); }
+#vera-input::placeholder { color: #2E4733; }
+#vera-send {
+  background: #00E676; border: none; cursor: pointer;
+  width: 36px; height: 36px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: #070A09; font-size: 16px;
+  transition: background .2s, transform .1s;
+  align-self: flex-end;
+}
+#vera-send:hover { background: #00C853; }
+#vera-send:active { transform: scale(.93); }
+#vera-send:disabled { background: #1A2E1F; color: #2E4733; cursor: default; }
+
+.vera-disclaimer {
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: #2E4733;
+  padding: 6px 12px 8px;
+  border-top: 1px solid rgba(0,230,118,0.06);
+  background: #0B100D;
+  flex-shrink: 0;
+}
+
+/* quick reply chips */
+.vera-chips {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  padding: 0 2px 4px;
+}
+.chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: #00E676;
+  border: 1px solid rgba(0,230,118,0.3);
+  padding: 5px 10px; cursor: pointer;
+  background: transparent;
+  transition: background .2s;
+}
+.chip:hover { background: rgba(0,230,118,0.1); }
+
+/* lead-collected confirmation inside chat */
+.vera-lead-card {
+  background: rgba(0,230,118,0.07);
+  border: 1px solid rgba(0,230,118,0.25);
+  padding: 12px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: #00E676;
+  align-self: stretch;
+  line-height: 1.7;
+}
+
+@media (max-width: 480px) {
+  #vera-panel { width: calc(100vw - 24px); right: 12px; bottom: 90px; }
+  #vera-launcher { bottom: 20px; right: 16px; }
+}
+</style>
+
+<!-- VERA HTML -->
+<button id="vera-launcher" onclick="veraToggle()" aria-label="Chat with VERA">
+  <span class="vera-launcher-icon">💬</span>
+  <span class="vera-notif">1</span>
+</button>
+
+<div id="vera-panel" role="dialog" aria-label="Chat with VERA">
+  <div class="vera-head">
+    <div class="vera-avatar">V</div>
+    <div class="vera-head-info">
+      <div class="vera-name">VERA</div>
+      <div class="vera-status">TruthScan Confidential Assistant</div>
+    </div>
+    <button class="vera-close" onclick="veraToggle()" aria-label="Close chat">✕</button>
+  </div>
+
+  <div class="vera-msgs" id="vera-msgs"></div>
+
+  <div class="vera-foot">
+    <textarea id="vera-input" rows="1" placeholder="Type your message…" onkeydown="veraKey(event)" oninput="veraResize(this)"></textarea>
+    <button id="vera-send" onclick="veraSend()" aria-label="Send">➤</button>
+  </div>
+  <div class="vera-disclaimer">🔒 Confidential · Powered by TruthScan AI</div>
+</div>
+
+<script>
+(function() {
+
+  /* ── CONFIG — replace these two values ── */
+  const OPENAI_KEY    = 'YOUR_OPENAI_API_KEY_HERE';
+  const FORMSPREE_ID  = 'meedbokp';
+  /* ──────────────────────────────────────── */
+
+  const SYSTEM_PROMPT = `You are VERA, a warm, empathetic, and highly professional confidential assistant for TruthScan — a private investigation and digital intelligence service. Your job is to engage visitors, understand their situation, and collect their contact details so a human investigator can follow up.
+
+PERSONALITY:
+- Warm, calm, non-judgmental. Never clinical or robotic.
+- People contacting you may be scared, embarrassed, or emotionally distressed. Treat them with great care.
+- You never rush. You ask one question at a time.
+- Never make promises about outcomes, timelines, or pricing — that is for the investigator.
+- Never claim to be human if directly and sincerely asked. Say: "I'm VERA, TruthScan's AI assistant. A real investigator will follow up with you personally."
+
+SERVICES YOU CAN DISCUSS (overview only):
+- Catching a cheating partner (surveillance, digital footprint, location tracking)
+- Private investigations (missing persons, background checks, surveillance)
+- OSINT & digital investigation (social media intelligence, identity verification)
+- Fraud & scam investigation (romance scams, crypto fraud, impersonation)
+- Penetration testing and cybersecurity
+- Any confidential personal or corporate investigation
+
+YOUR GOAL — follow this flow naturally:
+1. Greet warmly and ask what brings them here today.
+2. Listen and ask 1-2 empathetic follow-up questions to understand their situation.
+3. Reassure them their information is completely confidential.
+4. Collect: their FIRST NAME, EMAIL ADDRESS, and a brief description of what they need help with.
+5. Once you have all three, tell them an investigator will reach out within 24 hours, and that their case has been noted.
+6. After collecting details, output this EXACT block on its own line so the system can detect it (do not mention this to the user):
+VERA_LEAD_COLLECTED::{"name":"[name]","email":"[email]","summary":"[1-2 sentence case summary]"}
+
+RULES:
+- Never discuss competitor services.
+- Never give specific investigative advice or techniques.
+- Never collect payment information.
+- Keep responses concise — 2-4 sentences max per reply.
+- Always be the one to gently steer toward collecting contact info, but do not be pushy.
+- If someone is clearly in distress, acknowledge their feelings first before anything else.`;
+
+  let history = [];
+  let leadSent = false;
+  let panelOpen = false;
+  let greeted = false;
+
+  /* ── DOM refs ── */
+  const panel   = document.getElementById('vera-panel');
+  const msgs    = document.getElementById('vera-msgs');
+  const input   = document.getElementById('vera-input');
+  const sendBtn = document.getElementById('vera-send');
+  const notif   = document.querySelector('.vera-notif');
+
+  /* ── toggle panel ── */
+  window.veraToggle = function() {
+    panelOpen = !panelOpen;
+    panel.classList.toggle('open', panelOpen);
+    if (panelOpen) {
+      if (notif) notif.style.display = 'none';
+      if (!greeted) { greeted = true; setTimeout(veraGreet, 400); }
+      setTimeout(() => input.focus(), 300);
+    }
+  };
+
+  /* ── greeting ── */
+  function veraGreet() {
+    const greetMsg = "Hi, I'm VERA — TruthScan's confidential assistant. 👋\n\nEverything you share here is completely private. What brings you here today? Feel free to tell me as much or as little as you're comfortable with.";
+    addMsg('vera', greetMsg);
+    history.push({ role: 'assistant', content: greetMsg });
+
+    // show quick-reply chips after greeting
+    setTimeout(() => {
+      const chips = [
+        'I suspect my partner is cheating',
+        'I\'ve been scammed online',
+        'I need a background check',
+        'Something else'
+      ];
+      const chipWrap = document.createElement('div');
+      chipWrap.className = 'vera-chips';
+      chips.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'chip';
+        btn.textContent = c;
+        btn.onclick = () => { chipWrap.remove(); veraSubmit(c); };
+        chipWrap.appendChild(btn);
+      });
+      msgs.appendChild(chipWrap);
+      msgs.scrollTop = msgs.scrollHeight;
+    }, 600);
+  }
+
+  /* ── send on enter ── */
+  window.veraKey = function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); veraSend(); }
+  };
+
+  /* ── auto-resize textarea ── */
+  window.veraResize = function(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 90) + 'px';
+  };
+
+  /* ── public send (from button) ── */
+  window.veraSend = function() {
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    input.style.height = 'auto';
+    veraSubmit(text);
+  };
+
+  /* ── core submit ── */
+  async function veraSubmit(text) {
+    addMsg('user', text);
+    history.push({ role: 'user', content: text });
+    sendBtn.disabled = true;
+    input.disabled = true;
+
+    const typingEl = showTyping();
+
+    try {
+      const res = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${OPENAI_KEY}`
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          max_tokens: 300,
+          temperature: 0.7,
+          messages: [
+            { role: 'system', content: SYSTEM_PROMPT },
+            ...history
+          ]
+        })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error?.message || 'API error');
+      }
+
+      const raw = data.choices[0].message.content || '';
+      history.push({ role: 'assistant', content: raw });
+
+      /* detect lead collected marker */
+      const leadMatch = raw.match(/VERA_LEAD_COLLECTED::(\{.*?\})/s);
+      let displayText = raw.replace(/VERA_LEAD_COLLECTED::\{.*?\}/s, '').trim();
+
+      typingEl.remove();
+      if (displayText) addMsg('vera', displayText);
+
+      if (leadMatch && !leadSent) {
+        leadSent = true;
+        try {
+          const lead = JSON.parse(leadMatch[1]);
+          await submitLead(lead, history);
+          showLeadCard(lead);
+        } catch(e) {
+          console.warn('Lead parse error:', e);
+        }
+      }
+
+    } catch (err) {
+      typingEl.remove();
+      addMsg('vera', "I'm sorry, I'm having a brief connection issue. Please try again in a moment, or use the contact form below. 🙏");
+      console.error('VERA error:', err);
+    } finally {
+      sendBtn.disabled = false;
+      input.disabled = false;
+      input.focus();
+    }
+  }
+
+  /* ── add message bubble ── */
+  function addMsg(role, text) {
+    const wrap = document.createElement('div');
+    wrap.className = `vmsg ${role}`;
+
+    if (role === 'vera') {
+      const av = document.createElement('div');
+      av.className = 'vmsg-av'; av.textContent = 'V';
+      wrap.appendChild(av);
+    }
+
+    const bubble = document.createElement('div');
+    bubble.className = 'vmsg-bubble';
+    /* convert newlines to <br> */
+    bubble.innerHTML = text.replace(/\n/g, '<br>');
+    wrap.appendChild(bubble);
+
+    msgs.appendChild(wrap);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  /* ── typing indicator ── */
+  function showTyping() {
+    const el = document.createElement('div');
+    el.className = 'vera-typing';
+    el.innerHTML = '<span></span><span></span><span></span>';
+    msgs.appendChild(el);
+    msgs.scrollTop = msgs.scrollHeight;
+    return el;
+  }
+
+  /* ── show lead collected card in chat ── */
+  function showLeadCard(lead) {
+    const card = document.createElement('div');
+    card.className = 'vera-lead-card';
+    card.innerHTML = `✓ Case noted &amp; investigator alerted<br>Name: ${lead.name}<br>We'll reach out to: ${lead.email}`;
+    msgs.appendChild(card);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  /* ── submit lead to Formspree ── */
+  async function submitLead(lead, chatHistory) {
+    const transcript = chatHistory
+      .filter(m => m.role !== 'system')
+      .map(m => `[${m.role.toUpperCase()}]: ${m.content.replace(/VERA_LEAD_COLLECTED::\{.*?\}/s,'').trim()}`)
+      .join('\n\n');
+
+    const fd = new FormData();
+    fd.append('_subject',  `TruthScan VERA Lead — ${lead.name}`);
+    fd.append('name',       lead.name);
+    fd.append('email',      lead.email);
+    fd.append('summary',    lead.summary);
+    fd.append('source',     'VERA AI Chat Widget');
+    fd.append('transcript', transcript);
+
+    try {
+      await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: 'POST', body: fd,
+        headers: { Accept: 'application/json' }
+      });
+    } catch(e) {
+      console.warn('Formspree submit failed:', e);
+    }
+  }
+
+  /* ── auto-open after 8s with a nudge ── */
+  setTimeout(() => {
+    if (!panelOpen && notif) {
+      notif.style.display = 'flex';
+    }
+  }, 8000);
+
+})();
+</script>
+
 </body>
 </html>
