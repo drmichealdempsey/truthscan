@@ -3,1240 +3,760 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TruthScan | We Find What Others Can't</title>
-<meta name="description" content="TruthScan provides confidential digital investigations, partner surveillance, fraud tracing, and OSINT services. Discreet. Professional. Results-Driven.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
+<title>TruthScan | Confidential Investigation Services</title>
+<meta name="description" content="TruthScan helps you uncover the truth — catch a cheating partner, trace scammers, find missing persons, and more. Discreet, confidential, and professional.">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --green: #00FF87;
-    --green-dim: #00CC6A;
-    --green-glow: rgba(0,255,135,0.15);
-    --bg: #080C0A;
-    --bg2: #0D1410;
-    --bg3: #111A14;
-    --border: rgba(0,255,135,0.15);
-    --border-bright: rgba(0,255,135,0.4);
-    --text: #E8F0E9;
-    --text-muted: #7A9980;
-    --text-dim: #3D5940;
-    --mono: 'JetBrains Mono', monospace;
-    --sans: 'Inter', sans-serif;
-    --red: #FF4444;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    font-size: 16px;
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
-
-  /* Scanline overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0,0,0,0.03) 2px,
-      rgba(0,0,0,0.03) 4px
-    );
-    pointer-events: none;
-    z-index: 9999;
-  }
-
-  /* ===== NAV ===== */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    background: rgba(8,12,10,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 64px;
-  }
-
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    font-family: var(--mono);
-    font-weight: 700;
-    font-size: 18px;
-    color: var(--green);
-    letter-spacing: -0.5px;
-  }
-
-  .logo-icon {
-    width: 32px;
-    height: 32px;
-    border: 2px solid var(--green);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--green);
-    position: relative;
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-    background: var(--green-glow);
-  }
-
-  .logo span.dim { color: var(--text-muted); font-weight: 400; }
-
-  .nav-links {
-    display: flex;
-    gap: 2rem;
-    list-style: none;
-  }
-
-  .nav-links a {
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--text-muted);
-    text-decoration: none;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    transition: color 0.2s;
-    position: relative;
-  }
-
-  .nav-links a::before {
-    content: '> ';
-    color: var(--green);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-
-  .nav-links a:hover { color: var(--green); }
-  .nav-links a:hover::before { opacity: 1; }
-
-  .nav-cta {
-    background: transparent;
-    border: 1px solid var(--green);
-    color: var(--green) !important;
-    padding: 6px 16px;
-    font-family: var(--mono);
-    font-size: 12px;
-    text-decoration: none;
-    letter-spacing: 0.08em;
-    transition: background 0.2s, color 0.2s;
-    cursor: pointer;
-  }
-
-  .nav-cta:hover {
-    background: var(--green);
-    color: var(--bg) !important;
-  }
-
-  .hamburger {
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    cursor: pointer;
-    padding: 4px;
-  }
-
-  .hamburger span {
-    display: block;
-    width: 22px;
-    height: 2px;
-    background: var(--green);
-    transition: 0.3s;
-  }
-
-  /* ===== HERO ===== */
-  #home {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    padding: 100px 2rem 60px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,255,135,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,255,135,0.04) 1px, transparent 1px);
-    background-size: 60px 60px;
-    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
-  }
-
-  .hero-inner {
-    max-width: 900px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
-  }
-
-  .hero-tag {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--green);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .hero-tag::before {
-    content: '';
-    display: block;
-    width: 20px;
-    height: 1px;
-    background: var(--green);
-  }
-
-  .hero-tag .blink {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    background: var(--green);
-    border-radius: 50%;
-    animation: blink 1.2s infinite;
-    margin-right: 4px;
-  }
-
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-  }
-
-  .hero h1 {
-    font-family: var(--mono);
-    font-size: clamp(2.4rem, 5vw, 4rem);
-    font-weight: 700;
-    line-height: 1.1;
-    color: var(--text);
-    margin-bottom: 0.5rem;
-  }
-
-  .hero h1 .accent { color: var(--green); }
-  .hero h1 .strike {
-    color: var(--text-dim);
-    text-decoration: line-through;
-    text-decoration-color: var(--red);
-  }
-
-  .hero-sub {
-    font-size: 18px;
-    color: var(--text-muted);
-    max-width: 580px;
-    margin: 1.5rem 0 2.5rem;
-    font-weight: 300;
-    line-height: 1.7;
-  }
-
-  .hero-sub strong { color: var(--text); font-weight: 500; }
-
-  .hero-terminal {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    padding: 1rem 1.25rem;
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--text-muted);
-    max-width: 520px;
-    margin-bottom: 2.5rem;
-    position: relative;
-  }
-
-  .hero-terminal::before {
-    content: '● ● ●';
-    position: absolute;
-    top: -10px;
-    left: 16px;
-    font-size: 10px;
-    color: var(--text-dim);
-    background: var(--bg2);
-    padding: 0 6px;
-    letter-spacing: 4px;
-  }
-
-  .terminal-line { margin-bottom: 4px; }
-  .terminal-line .prompt { color: var(--green); }
-  .terminal-line .cmd { color: var(--text); }
-  .terminal-line .out { color: var(--text-muted); padding-left: 1.2em; }
-  .terminal-line .out.ok { color: var(--green); }
-  .terminal-line .cursor {
-    display: inline-block;
-    width: 8px;
-    height: 14px;
-    background: var(--green);
-    vertical-align: -2px;
-    animation: blink 1s infinite;
-  }
-
-  .hero-btns {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--green);
-    color: var(--bg);
-    padding: 14px 28px;
-    font-family: var(--mono);
-    font-size: 13px;
-    font-weight: 700;
-    text-decoration: none;
-    letter-spacing: 0.05em;
-    transition: background 0.2s, transform 0.1s;
-    cursor: pointer;
-    border: none;
-  }
-
-  .btn-primary:hover { background: var(--green-dim); transform: translateY(-1px); }
-
-  .btn-outline {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: transparent;
-    color: var(--green);
-    padding: 13px 28px;
-    font-family: var(--mono);
-    font-size: 13px;
-    font-weight: 500;
-    text-decoration: none;
-    letter-spacing: 0.05em;
-    border: 1px solid var(--border-bright);
-    transition: border-color 0.2s, background 0.2s;
-    cursor: pointer;
-  }
-
-  .btn-outline:hover { border-color: var(--green); background: var(--green-glow); }
-
-  /* ===== SECTION COMMON ===== */
-  section {
-    padding: 90px 2rem;
-  }
-
-  .container {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  .section-label {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--green);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    margin-bottom: 0.75rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .section-label::before {
-    content: '//';
-    color: var(--text-dim);
-  }
-
-  .section-title {
-    font-family: var(--mono);
-    font-size: clamp(1.6rem, 3vw, 2.2rem);
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 0.5rem;
-    line-height: 1.2;
-  }
-
-  .section-sub {
-    color: var(--text-muted);
-    font-size: 16px;
-    max-width: 560px;
-    margin-bottom: 3rem;
-    font-weight: 300;
-  }
-
-  hr.scan-line {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 2rem 0;
-  }
-
-  /* ===== SOLUTIONS ===== */
-  #solutions { background: var(--bg2); }
-
-  .solutions-ethic {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--text-dim);
-    letter-spacing: 0.15em;
-    margin-bottom: 3rem;
-    text-transform: uppercase;
-  }
-
-  .solutions-ethic span { color: var(--green); }
-
-  .solutions-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5px;
-    background: var(--border);
-  }
-
-  .service-card {
-    background: var(--bg2);
-    padding: 2rem;
-    position: relative;
-    transition: background 0.2s;
-  }
-
-  .service-card:hover { background: var(--bg3); }
-
-  .service-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 3px;
-    height: 0;
-    background: var(--green);
-    transition: height 0.3s;
-  }
-
-  .service-card:hover::before { height: 100%; }
-
-  .service-num {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-dim);
-    letter-spacing: 0.1em;
-    margin-bottom: 1rem;
-  }
-
-  .service-title {
-    font-family: var(--mono);
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--green);
-    margin-bottom: 0.5rem;
-  }
-
-  .service-desc {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-bottom: 1.25rem;
-    font-weight: 300;
-  }
-
-  .service-items {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .service-items li {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--text-muted);
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .service-items li::before {
-    content: '→';
-    color: var(--green);
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-
-  .service-badge {
-    display: inline-block;
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    padding: 3px 8px;
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-    text-transform: uppercase;
-    margin-top: 1rem;
-  }
-
-  .service-card.featured .service-badge {
-    border-color: var(--green);
-    color: var(--green);
-  }
-
-  .solutions-footer {
-    margin-top: 2rem;
-    padding: 1rem 1.5rem;
-    border: 1px dashed var(--border);
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--text-muted);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .solutions-footer::before {
-    content: '?';
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    border: 1px solid var(--green);
-    color: var(--green);
-    flex-shrink: 0;
-    font-weight: 700;
-  }
-
-  /* ===== TRUST ===== */
-  #trust { background: var(--bg); }
-
-  .trust-header {
-    font-family: var(--mono);
-    font-size: clamp(1.4rem, 3vw, 2rem);
-    color: var(--text);
-    font-weight: 700;
-    margin-bottom: 0.75rem;
-  }
-
-  .trust-header .accent { color: var(--green); }
-
-  .trust-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1px;
-    background: var(--border);
-    margin-top: 3rem;
-  }
-
-  .trust-card {
-    background: var(--bg);
-    padding: 1.75rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .trust-icon {
-    font-family: var(--mono);
-    font-size: 22px;
-    color: var(--green);
-  }
-
-  .trust-name {
-    font-family: var(--mono);
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .trust-desc {
-    font-size: 14px;
-    color: var(--text-muted);
-    font-weight: 300;
-    line-height: 1.6;
-  }
-
-  .trust-status {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--green);
-    margin-top: auto;
-  }
-
-  .trust-status::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    background: var(--green);
-    border-radius: 50%;
-    animation: blink 1.5s infinite;
-  }
-
-  /* ===== HOW IT WORKS ===== */
-  #how { background: var(--bg2); }
-
-  .steps {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 0;
-    position: relative;
-  }
-
-  .steps::before {
-    content: '';
-    position: absolute;
-    top: 32px;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: var(--border);
-    z-index: 0;
-  }
-
-  .step {
-    padding: 0 1.5rem 2rem 0;
-    position: relative;
-    z-index: 1;
-  }
-
-  .step-num {
-    width: 64px;
-    height: 64px;
-    border: 1px solid var(--border-bright);
-    background: var(--bg2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--mono);
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--green);
-    margin-bottom: 1.5rem;
-  }
-
-  .step-title {
-    font-family: var(--mono);
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 0.5rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .step-desc {
-    font-size: 14px;
-    color: var(--text-muted);
-    font-weight: 300;
-    line-height: 1.6;
-  }
-
-  /* ===== INDUSTRIES ===== */
-  #industries { background: var(--bg); }
-
-  .ticker-wrap {
-    overflow: hidden;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 0;
-    margin-top: 2rem;
-  }
-
-  .ticker {
-    display: flex;
-    gap: 3rem;
-    animation: scroll 20s linear infinite;
-    white-space: nowrap;
-  }
-
-  @keyframes scroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  .ticker-item {
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-shrink: 0;
-  }
-
-  .ticker-item::after {
-    content: '◆';
-    color: var(--green);
-    font-size: 8px;
-  }
-
-  /* ===== CTA ===== */
-  #cta {
-    background: var(--bg2);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 80px 2rem;
-    text-align: center;
-  }
-
-  .cta-terminal {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--text-dim);
-    margin-bottom: 1.5rem;
-    letter-spacing: 0.1em;
-  }
-
-  .cta-title {
-    font-family: var(--mono);
-    font-size: clamp(1.8rem, 4vw, 3rem);
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 1rem;
-    line-height: 1.2;
-  }
-
-  .cta-title .accent { color: var(--green); }
-
-  .cta-sub {
-    color: var(--text-muted);
-    font-size: 16px;
-    max-width: 560px;
-    margin: 0 auto 2.5rem;
-    font-weight: 300;
-  }
-
-  .cta-btns {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  /* ===== BLOG ===== */
-  #blog { background: var(--bg); }
-
-  .blog-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5px;
-    background: var(--border);
-  }
-
-  .blog-card {
-    background: var(--bg);
-    display: flex;
-    flex-direction: column;
-    transition: background 0.2s;
-  }
-
-  .blog-card:hover { background: var(--bg3); }
-
-  .blog-img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    display: block;
-    filter: grayscale(60%) brightness(0.7);
-    transition: filter 0.3s;
-  }
-
-  .blog-card:hover .blog-img { filter: grayscale(20%) brightness(0.85); }
-
-  .blog-body {
-    padding: 1.5rem;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .blog-meta {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-dim);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .blog-meta .cat { color: var(--green); }
-
-  .blog-title {
-    font-family: var(--mono);
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text);
-    line-height: 1.4;
-  }
-
-  .blog-excerpt {
-    font-size: 13px;
-    color: var(--text-muted);
-    font-weight: 300;
-    line-height: 1.6;
-    flex: 1;
-  }
-
-  .blog-link {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--green);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: gap 0.2s;
-  }
-
-  .blog-link:hover { gap: 10px; }
-  .blog-link::after { content: '→'; }
-
-  /* ===== CONTACT ===== */
-  #contact { background: var(--bg2); }
-
-  .contact-wrap {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: start;
-  }
-
-  .contact-info h3 {
-    font-family: var(--mono);
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 1rem;
-  }
-
-  .contact-info p {
-    font-size: 14px;
-    color: var(--text-muted);
-    font-weight: 300;
-    margin-bottom: 1.5rem;
-  }
-
-  .contact-method {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
-
-  .method-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    border: 1px solid var(--border);
-    transition: border-color 0.2s;
-  }
-
-  .method-item:hover { border-color: var(--border-bright); }
-
-  .method-icon {
-    font-size: 20px;
-    color: var(--green);
-    flex-shrink: 0;
-  }
-
-  .method-text {
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--text-muted);
-  }
-
-  .method-text strong {
-    color: var(--text);
-    display: block;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 2px;
-  }
-
-  .contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .field label {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
-  .field input,
-  .field select,
-  .field textarea {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 12px 14px;
-    font-family: var(--mono);
-    font-size: 13px;
-    outline: none;
-    transition: border-color 0.2s;
-    width: 100%;
-    resize: vertical;
-  }
-
-  .field input:focus,
-  .field select:focus,
-  .field textarea:focus {
-    border-color: var(--green);
-  }
-
-  .field select option { background: var(--bg2); }
-
-  .field textarea { min-height: 120px; }
-
-  .field input::placeholder,
-  .field textarea::placeholder {
-    color: var(--text-dim);
-  }
-
-  .form-encrypt {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-dim);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    letter-spacing: 0.05em;
-  }
-
-  .form-encrypt::before {
-    content: '🔒';
-    font-size: 13px;
-  }
-
-  .form-success {
-    display: none;
-    background: rgba(0,255,135,0.08);
-    border: 1px solid var(--border-bright);
-    padding: 1rem 1.25rem;
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--green);
-  }
-
-  /* ===== FOOTER ===== */
-  footer {
-    background: var(--bg);
-    border-top: 1px solid var(--border);
-    padding: 2.5rem 2rem;
-  }
-
-  .footer-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .footer-logo {
-    font-family: var(--mono);
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--green);
-  }
-
-  .footer-tagline {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--text-dim);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    margin-top: 4px;
-  }
-
-  .footer-links {
-    display: flex;
-    gap: 1.5rem;
-    list-style: none;
-  }
-
-  .footer-links a {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--text-dim);
-    text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    transition: color 0.2s;
-  }
-
-  .footer-links a:hover { color: var(--green); }
-
-  .footer-copy {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-dim);
-    width: 100%;
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  /* ===== MOBILE ===== */
-  @media (max-width: 768px) {
-    nav { padding: 0 1.25rem; }
-    .nav-links { display: none; flex-direction: column; gap: 1rem; }
-    .nav-links.open {
-      display: flex;
-      position: fixed;
-      top: 64px; left: 0; right: 0;
-      background: rgba(8,12,10,0.98);
-      padding: 1.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .hamburger { display: flex; }
-    #home { padding: 90px 1.25rem 50px; }
-    section { padding: 60px 1.25rem; }
-    .contact-wrap { grid-template-columns: 1fr; gap: 2.5rem; }
-    .form-row { grid-template-columns: 1fr; }
-    .steps::before { display: none; }
-    .footer-inner { flex-direction: column; align-items: flex-start; }
-    .footer-links { flex-wrap: wrap; gap: 1rem; }
-  }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --bg:       #070A09;
+  --bg2:      #0B100D;
+  --bg3:      #0F1511;
+  --surface:  #131A15;
+  --green:    #00E676;
+  --green2:   #00C853;
+  --glow:     rgba(0,230,118,0.12);
+  --border:   rgba(0,230,118,0.12);
+  --borderHi: rgba(0,230,118,0.35);
+  --text:     #E2EDE4;
+  --muted:    #6B8F72;
+  --dim:      #2E4733;
+  --red:      #FF5252;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Inter', sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* Subtle scanlines */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.025) 3px, rgba(0,0,0,0.025) 4px);
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 500;
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  background: rgba(7,10,9,0.94);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--mono); font-weight: 700; font-size: 17px;
+  color: var(--text); text-decoration: none; letter-spacing: -0.3px;
+}
+.logo-mark {
+  width: 34px; height: 34px;
+  border: 1.5px solid var(--green);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: var(--green);
+  background: var(--glow);
+}
+.logo em { color: var(--green); font-style: normal; }
+
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  font-family: var(--mono); font-size: 12px;
+  color: var(--muted); text-decoration: none;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--green); }
+
+.nav-btn {
+  font-family: var(--mono); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 8px 18px;
+  border: 1px solid var(--green); color: var(--green);
+  background: transparent; text-decoration: none;
+  transition: background .2s, color .2s; cursor: pointer;
+}
+.nav-btn:hover { background: var(--green); color: var(--bg); }
+
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+.hamburger span { display: block; width: 22px; height: 1.5px; background: var(--green); transition: .3s; }
+
+/* ── HERO ── */
+#home {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding: 100px 2rem 70px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* dot grid bg */
+#home::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(0,230,118,0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 70% 80% at 50% 50%, black 0%, transparent 100%);
+}
+
+.hero-wrap {
+  max-width: 860px; margin: 0 auto;
+  position: relative; z-index: 1;
+}
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--green);
+  border: 1px solid var(--border); padding: 5px 14px;
+  margin-bottom: 2rem; background: var(--glow);
+}
+.pulse {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.8)} }
+
+.hero h1 {
+  font-family: var(--mono); font-weight: 700;
+  font-size: clamp(2.2rem, 5.5vw, 4rem);
+  line-height: 1.1; color: var(--text);
+  margin-bottom: 1.5rem;
+}
+.hero h1 .g { color: var(--green); }
+.hero h1 .faded { color: var(--dim); }
+
+.hero-lead {
+  font-size: 18px; color: var(--muted); font-weight: 300;
+  max-width: 600px; margin-bottom: 2.5rem; line-height: 1.75;
+}
+.hero-lead strong { color: var(--text); font-weight: 500; }
+
+/* proof strip */
+.proof-strip {
+  display: flex; gap: 2rem; flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+.proof-item {
+  font-family: var(--mono); font-size: 12px; color: var(--muted);
+  display: flex; align-items: center; gap: 6px;
+}
+.proof-item::before { content: '✓'; color: var(--green); }
+
+.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+.btn-solid {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--green); color: var(--bg);
+  font-family: var(--mono); font-size: 13px; font-weight: 700;
+  letter-spacing: 0.05em; padding: 14px 28px;
+  text-decoration: none; border: none; cursor: pointer;
+  transition: background .2s, transform .15s;
+}
+.btn-solid:hover { background: var(--green2); transform: translateY(-1px); }
+
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent; color: var(--text);
+  font-family: var(--mono); font-size: 13px; font-weight: 500;
+  letter-spacing: 0.05em; padding: 13px 28px;
+  text-decoration: none; border: 1px solid var(--border);
+  transition: border-color .2s, background .2s; cursor: pointer;
+}
+.btn-ghost:hover { border-color: var(--borderHi); background: var(--glow); }
+
+/* ── SECTION SHARED ── */
+section { padding: 90px 2rem; }
+.container { max-width: 1080px; margin: 0 auto; }
+
+.eyebrow {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--green); letter-spacing: 0.18em; text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+.eyebrow::before { content: '// '; color: var(--dim); }
+
+.sec-title {
+  font-family: var(--mono); font-weight: 700;
+  font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+  color: var(--text); line-height: 1.2; margin-bottom: 0.75rem;
+}
+.sec-title .g { color: var(--green); }
+
+.sec-sub {
+  font-size: 16px; color: var(--muted); font-weight: 300;
+  max-width: 520px; margin-bottom: 3rem;
+}
+
+/* ── SERVICES ── */
+#services { background: var(--bg2); }
+
+.tag-row {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+.tag {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 4px 12px;
+  border: 1px solid var(--border); color: var(--muted);
+}
+.tag.hi { border-color: var(--green); color: var(--green); }
+
+.srv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 1.5px;
+  background: var(--border);
+}
+
+.srv {
+  background: var(--bg2); padding: 2rem;
+  display: flex; flex-direction: column; gap: 1rem;
+  position: relative; overflow: hidden;
+  transition: background .2s;
+}
+.srv::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 2px; height: 0;
+  background: var(--green);
+  transition: height .3s ease;
+}
+.srv:hover { background: var(--surface); }
+.srv:hover::before { height: 100%; }
+
+.srv-id {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--dim); letter-spacing: 0.1em;
+}
+.srv-name {
+  font-family: var(--mono); font-size: 15px; font-weight: 700;
+  color: var(--green); line-height: 1.3;
+}
+.srv-caption {
+  font-size: 13px; color: var(--muted); font-weight: 300; line-height: 1.6;
+}
+.srv-list {
+  list-style: none; display: flex; flex-direction: column; gap: 5px;
+}
+.srv-list li {
+  font-family: var(--mono); font-size: 12px; color: var(--muted);
+  display: flex; gap: 8px; align-items: flex-start;
+}
+.srv-list li::before { content: '›'; color: var(--green); flex-shrink: 0; }
+
+.srv-catch {
+  margin-top: auto;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--dim);
+  border-top: 1px solid var(--border); padding-top: 1rem;
+}
+.srv.primary .srv-catch { color: var(--green); border-color: var(--borderHi); }
+
+.srv-footer {
+  margin-top: 1.5px;
+  background: var(--bg2);
+  padding: 1.25rem 1.5rem;
+  border-top: 1px dashed var(--border);
+  font-family: var(--mono); font-size: 12px; color: var(--muted);
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.srv-footer a { color: var(--green); text-decoration: none; }
+.srv-footer a:hover { text-decoration: underline; }
+
+/* ── WHY US ── */
+#why { background: var(--bg); }
+
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1.5px; background: var(--border);
+  margin-top: 2.5rem;
+}
+.why-card {
+  background: var(--bg); padding: 1.75rem 1.5rem;
+  display: flex; flex-direction: column; gap: 0.75rem;
+}
+.why-icon { font-size: 24px; }
+.why-title {
+  font-family: var(--mono); font-weight: 700; font-size: 13px;
+  text-transform: uppercase; letter-spacing: 0.06em; color: var(--text);
+}
+.why-body { font-size: 14px; color: var(--muted); font-weight: 300; line-height: 1.65; }
+.live-dot {
+  margin-top: auto;
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 11px; color: var(--green);
+}
+.live-dot::before {
+  content: '';
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green);
+  animation: pulse 1.5s infinite;
+}
+
+/* ── HOW IT WORKS ── */
+#how { background: var(--bg2); }
+
+.steps-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 2rem; position: relative;
+}
+.steps-row::before {
+  content: '';
+  position: absolute; top: 30px; left: 0; right: 0;
+  height: 1px; background: var(--border);
+}
+.step { position: relative; z-index: 1; }
+.step-n {
+  width: 60px; height: 60px; margin-bottom: 1.5rem;
+  border: 1px solid var(--borderHi); background: var(--bg2);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 20px; font-weight: 700;
+  color: var(--green);
+}
+.step-title {
+  font-family: var(--mono); font-size: 13px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text); margin-bottom: 0.5rem;
+}
+.step-body { font-size: 14px; color: var(--muted); font-weight: 300; line-height: 1.65; }
+
+/* ── WHO WE HELP ── */
+#who { background: var(--bg); }
+
+.ticker-outer {
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 13px 0; margin-top: 2rem;
+}
+.ticker-inner {
+  display: flex; gap: 3rem;
+  animation: marquee 22s linear infinite;
+  white-space: nowrap;
+}
+@keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+.tick {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted);
+  flex-shrink: 0; display: flex; align-items: center; gap: 1rem;
+}
+.tick::after { content: '◆'; color: var(--green); font-size: 7px; }
+
+/* ── CTA BAND ── */
+#cta-band {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 80px 2rem;
+  text-align: center;
+}
+.cta-label {
+  font-family: var(--mono); font-size: 11px;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 1.25rem;
+}
+.cta-h {
+  font-family: var(--mono); font-weight: 700;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  color: var(--text); line-height: 1.2; margin-bottom: 1rem;
+}
+.cta-h .g { color: var(--green); }
+.cta-p {
+  font-size: 16px; color: var(--muted); font-weight: 300;
+  max-width: 540px; margin: 0 auto 2.5rem;
+}
+.cta-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+/* ── BLOG ── */
+#blog { background: var(--bg); }
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5px; background: var(--border);
+}
+.bcard { background: var(--bg); display: flex; flex-direction: column; transition: background .2s; }
+.bcard:hover { background: var(--surface); }
+.bcard img {
+  width: 100%; height: 185px; object-fit: cover; display: block;
+  filter: grayscale(60%) brightness(0.65);
+  transition: filter .35s;
+}
+.bcard:hover img { filter: grayscale(20%) brightness(0.8); }
+.bcard-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; gap: 0.6rem; }
+.bcard-meta { font-family: var(--mono); font-size: 11px; color: var(--dim); letter-spacing: 0.08em; }
+.bcard-meta span { color: var(--green); }
+.bcard-title { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.4; }
+.bcard-snip { font-size: 13px; color: var(--muted); font-weight: 300; line-height: 1.6; flex: 1; }
+.bcard-link {
+  font-family: var(--mono); font-size: 12px; color: var(--green);
+  text-decoration: none; display: flex; align-items: center; gap: 5px;
+  transition: gap .2s; margin-top: 0.25rem;
+}
+.bcard-link:hover { gap: 9px; }
+.bcard-link::after { content: '→'; }
+
+/* ── CONTACT ── */
+#contact { background: var(--bg2); }
+
+.contact-grid {
+  display: grid; grid-template-columns: 1fr 1.3fr;
+  gap: 4rem; align-items: start;
+}
+.contact-side h3 {
+  font-family: var(--mono); font-size: 14px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.07em;
+  color: var(--text); margin-bottom: 0.75rem;
+}
+.contact-side p { font-size: 14px; color: var(--muted); font-weight: 300; margin-bottom: 1.5rem; }
+
+.channel {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px; border: 1px solid var(--border);
+  margin-bottom: 0.75rem; transition: border-color .2s;
+}
+.channel:hover { border-color: var(--borderHi); }
+.ch-icon { font-size: 22px; flex-shrink: 0; }
+.ch-info { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.ch-info strong { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text); margin-bottom: 2px; }
+
+.resp-note {
+  margin-top: 1rem; padding: 1rem 1.25rem;
+  border: 1px solid var(--border); background: var(--bg);
+  font-family: var(--mono); font-size: 12px; color: var(--muted);
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.resp-note::before {
+  content: '⚡'; font-size: 16px; color: var(--green); flex-shrink: 0; margin-top: 1px;
+}
+
+/* form */
+.contact-form { display: flex; flex-direction: column; gap: 1rem; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--dim);
+}
+.field input, .field select, .field textarea {
+  background: var(--bg); border: 1px solid var(--border);
+  color: var(--text); padding: 11px 13px;
+  font-family: var(--mono); font-size: 13px;
+  outline: none; width: 100%; resize: vertical;
+  transition: border-color .2s;
+  -webkit-appearance: none;
+}
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--green); }
+.field input::placeholder, .field textarea::placeholder { color: var(--dim); }
+.field select option { background: var(--bg2); }
+.field textarea { min-height: 120px; }
+
+.enc-note {
+  font-family: var(--mono); font-size: 11px; color: var(--dim);
+  display: flex; align-items: center; gap: 6px;
+}
+.enc-note::before { content: '🔒'; font-size: 12px; }
+
+.form-ok {
+  display: none; padding: 1rem 1.25rem;
+  background: rgba(0,230,118,0.07);
+  border: 1px solid var(--borderHi);
+  font-family: var(--mono); font-size: 13px; color: var(--green);
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 2.5rem 2rem;
+}
+.foot-inner {
+  max-width: 1080px; margin: 0 auto;
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 1.5rem; flex-wrap: wrap;
+}
+.foot-brand { font-family: var(--mono); }
+.foot-name { font-size: 16px; font-weight: 700; color: var(--green); }
+.foot-tag { font-size: 11px; color: var(--dim); letter-spacing: 0.05em; margin-top: 4px; }
+.foot-links { display: flex; gap: 1.5rem; flex-wrap: wrap; list-style: none; }
+.foot-links a {
+  font-family: var(--mono); font-size: 11px; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--dim); text-decoration: none;
+  transition: color .2s;
+}
+.foot-links a:hover { color: var(--green); }
+.foot-copy {
+  width: 100%;
+  padding-top: 1.5rem; margin-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+  font-family: var(--mono); font-size: 11px; color: var(--dim);
+}
+
+/* ── MOBILE ── */
+@media (max-width: 720px) {
+  nav { padding: 0 1.25rem; }
+  .nav-links { display: none; }
+  .nav-links.open {
+    display: flex; flex-direction: column; gap: 1rem;
+    position: fixed; top: 66px; left: 0; right: 0;
+    background: rgba(7,10,9,0.98);
+    padding: 1.5rem; border-bottom: 1px solid var(--border);
+  }
+  .hamburger { display: flex; }
+  section { padding: 60px 1.25rem; }
+  #home { padding: 90px 1.25rem 60px; }
+  .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .field-row { grid-template-columns: 1fr; }
+  .steps-row::before { display: none; }
+  .foot-inner { flex-direction: column; }
+}
 </style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav id="navbar">
+<nav>
   <a href="#home" class="logo">
-    <div class="logo-icon">TS</div>
-    Truth<span class="dim">Scan</span>
+    <div class="logo-mark">TS</div>
+    Truth<em>Scan</em>
   </a>
   <ul class="nav-links" id="nav-links">
-    <li><a href="#solutions">Solutions</a></li>
+    <li><a href="#services">Services</a></li>
     <li><a href="#how">How It Works</a></li>
-    <li><a href="#blog">Insights</a></li>
-    <li><a href="#contact" class="nav-cta">Contact</a></li>
+    <li><a href="#blog">Blog</a></li>
+    <li><a href="#contact">Contact</a></li>
   </ul>
-  <div class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle menu">
+  <a href="#contact" class="nav-btn" style="display:none;" id="nav-cta-btn">Get Help Now</a>
+  <div class="hamburger" id="ham" onclick="toggleNav()">
     <span></span><span></span><span></span>
   </div>
 </nav>
 
 <!-- HERO -->
 <section id="home">
-  <div class="hero-grid"></div>
-  <div class="hero-inner hero">
-    <div class="hero-tag">
-      <span class="blink"></span>
-      Secure Connection Established
+  <div class="hero-wrap">
+    <div class="hero-badge">
+      <div class="pulse"></div>
+      Confidential &amp; Secure
     </div>
-    <h1>We Find What<br><span class="accent">Others</span> <span class="strike">Can't</span></h1>
-    <p class="hero-sub">
-      Solving <strong>difficult, confidential problems</strong> with technology, intelligence, and ethical hacking experience. Discreet. Professional. Results-driven.
+
+    <h1 class="hero">
+      We Help You<br>
+      Uncover <span class="g">the Truth</span><br>
+      <span class="faded">— When It Matters Most</span>
+    </h1>
+
+    <p class="hero-lead">
+      Suspecting a cheating partner? Been scammed online? Need someone found?
+      <strong>TruthScan delivers discreet, professional investigations</strong> using technology,
+      intelligence, and ethical hacking experience — so you get real answers, not more doubt.
     </p>
-    <div class="hero-terminal">
-      <div class="terminal-line">
-        <span class="prompt">$ </span>
-        <span class="cmd">truthscan --mode=investigation --privacy=max</span>
-      </div>
-      <div class="terminal-line">
-        <span class="out">→ Scanning digital footprint...</span>
-      </div>
-      <div class="terminal-line">
-        <span class="out ok">✓ Identity verified. Initiating confidential case review.</span>
-      </div>
-      <div class="terminal-line">
-        <span class="out">→ Awaiting your inquiry<span class="cursor"></span></span>
-      </div>
+
+    <div class="proof-strip">
+      <div class="proof-item">Completely Confidential</div>
+      <div class="proof-item">Worldwide Coverage</div>
+      <div class="proof-item">Results-Driven</div>
+      <div class="proof-item">Ethical &amp; Authorized</div>
     </div>
-    <div class="hero-btns">
-      <a href="#contact" class="btn-primary">⟶ Start a Confidential Case</a>
-      <a href="#solutions" class="btn-outline">View Solutions</a>
+
+    <div class="hero-actions">
+      <a href="#contact" class="btn-solid">Get Confidential Help →</a>
+      <a href="#services" class="btn-ghost">See What We Do</a>
     </div>
   </div>
 </section>
 
-<!-- SOLUTIONS -->
-<section id="solutions">
+<!-- SERVICES -->
+<section id="services">
   <div class="container">
-    <div class="section-label">Solutions</div>
-    <h2 class="section-title">Our Investigative Services</h2>
-    <p class="section-sub">Every case is handled with strict confidentiality, ethical practice, and a commitment to real results.</p>
-    <div class="solutions-ethic">
-      <span>[ AUTHORIZED ]</span> &nbsp;·&nbsp; <span>[ ETHICAL ]</span> &nbsp;·&nbsp; <span>[ PROFESSIONAL ]</span>
+    <div class="eyebrow">What We Do</div>
+    <h2 class="sec-title">Our <span class="g">Services</span></h2>
+    <p class="sec-sub">Every case is handled with absolute discretion. We use technology, surveillance, and intelligence to get you the answers you need.</p>
+
+    <div class="tag-row">
+      <span class="tag hi">Ethical</span>
+      <span class="tag hi">Authorized</span>
+      <span class="tag hi">Professional</span>
+      <span class="tag">Discreet</span>
+      <span class="tag">Confidential</span>
     </div>
 
-    <div class="solutions-grid">
+    <div class="srv-grid">
 
-      <!-- Card 1: Partner Investigation -->
-      <div class="service-card featured">
-        <div class="service-num">01 // PRIMARY</div>
-        <div class="service-title">Partner & Relationship Investigation</div>
-        <div class="service-desc">Discreet surveillance and digital tracking to uncover the truth about your partner.</div>
-        <ul class="service-items">
-          <li>Catch a Cheating Partner</li>
-          <li>Surveillance and Investigation</li>
+      <!-- 1: CHEATING PARTNER — featured -->
+      <div class="srv primary">
+        <div class="srv-id">01 — Most Requested</div>
+        <div class="srv-name">Catch a Cheating Partner</div>
+        <div class="srv-caption">
+          If something feels off, it usually is. We help you find out the truth about your partner — discreetly, without them ever knowing.
+        </div>
+        <ul class="srv-list">
+          <li>Surveillance &amp; Covert Monitoring</li>
           <li>Live Location Tracking</li>
-          <li>Social Media Intelligence</li>
+          <li>Social Media &amp; Online Activity Check</li>
           <li>Digital Footprint Analysis</li>
-          <li>Background Checks</li>
+          <li>Phone &amp; Device Investigation</li>
+          <li>Background &amp; Identity Check</li>
         </ul>
-        <span class="service-badge">Core Service</span>
+        <div class="srv-catch">★ Core Service — Fast, Discreet, Confidential</div>
       </div>
 
-      <!-- Card 2: OSINT -->
-      <div class="service-card">
-        <div class="service-num">02 // INTEL</div>
-        <div class="service-title">OSINT & Digital Investigation</div>
-        <div class="service-desc">Open source intelligence and deep digital footprint analysis across all platforms.</div>
-        <ul class="service-items">
-          <li>Social Media Intelligence</li>
-          <li>Digital Footprint Analysis</li>
-          <li>Threat Intelligence</li>
+      <!-- 2: Private Investigator -->
+      <div class="srv">
+        <div class="srv-id">02 — Personal &amp; Corporate</div>
+        <div class="srv-name">Private Investigator Services</div>
+        <div class="srv-caption">
+          Confidential personal and corporate investigation — for situations that require a professional and a delicate touch.
+        </div>
+        <ul class="srv-list">
+          <li>Missing Persons</li>
+          <li>Surveillance &amp; Investigation</li>
+          <li>Bug Sweeping (Home &amp; Office)</li>
           <li>Background Checks</li>
+          <li>Due Diligence</li>
+          <li>Criminal &amp; Civil Investigations</li>
+          <li>Elder Abuse Investigation</li>
+          <li>Employment Screening</li>
+          <li>Workplace Theft Investigation</li>
+        </ul>
+        <div class="srv-catch">Private &amp; Corporate Cases Accepted</div>
+      </div>
+
+      <!-- 3: OSINT -->
+      <div class="srv">
+        <div class="srv-id">03 — Intelligence</div>
+        <div class="srv-name">OSINT &amp; Digital Investigation</div>
+        <div class="srv-caption">
+          Open source intelligence and deep digital footprint analysis. We find what people try to hide online.
+        </div>
+        <ul class="srv-list">
+          <li>Digital Footprint Analysis</li>
+          <li>Social Media Intelligence</li>
+          <li>Background Checks</li>
+          <li>Threat Intelligence</li>
           <li>Surveillance Services</li>
           <li>Second Identity Verification</li>
+          <li>Admin Authorization</li>
         </ul>
-        <span class="service-badge">Intelligence</span>
+        <div class="srv-catch">Intelligence-Led Investigation</div>
       </div>
 
-      <!-- Card 3: Fraud -->
-      <div class="service-card">
-        <div class="service-num">03 // FRAUD</div>
-        <div class="service-title">Fraud & Scam Investigation</div>
-        <div class="service-desc">Tracing and exposing online scams, impersonators, and financial fraud operators.</div>
-        <ul class="service-items">
-          <li>Romance & Investment Scam Tracing</li>
-          <li>Cryptocurrency Fraud Recovery</li>
+      <!-- 4: Fraud & Scam -->
+      <div class="srv">
+        <div class="srv-id">04 — Fraud</div>
+        <div class="srv-name">Fraud &amp; Scam Investigation</div>
+        <div class="srv-caption">
+          Been tricked, robbed, or impersonated online? We trace the culprits and help you build a case for recovery.
+        </div>
+        <ul class="srv-list">
+          <li>Romance &amp; Investment Scam Tracing</li>
           <li>Impersonation Cases</li>
           <li>Financial Fraud Investigation</li>
           <li>Live Location Tracking</li>
+          <li>Cryptocurrency Fraud Tracing</li>
         </ul>
-        <span class="service-badge">Fraud</span>
+        <div class="srv-catch">Scam &amp; Fraud Recovery Support</div>
       </div>
 
-      <!-- Card 4: Private Investigator -->
-      <div class="service-card">
-        <div class="service-num">04 // PRIVATE</div>
-        <div class="service-title">Private Investigator Services</div>
-        <div class="service-desc">Confidential personal and corporate investigation handled with full discretion.</div>
-        <ul class="service-items">
-          <li>Missing Persons</li>
-          <li>Bug Sweeping (Home & Office)</li>
-          <li>Criminal & Civil Investigations</li>
-          <li>Elder Abuse Investigation</li>
-          <li>Employment Screening</li>
-          <li>Due Diligence</li>
-        </ul>
-        <span class="service-badge">Private</span>
-      </div>
-
-      <!-- Card 5: Pen Testing -->
-      <div class="service-card">
-        <div class="service-num">05 // SECURITY</div>
-        <div class="service-title">Penetration Testing</div>
-        <div class="service-desc">Authorized ethical hacking to expose vulnerabilities before someone else does.</div>
-        <ul class="service-items">
+      <!-- 5: Pen Testing -->
+      <div class="srv">
+        <div class="srv-id">05 — Security</div>
+        <div class="srv-name">Penetration Testing</div>
+        <div class="srv-caption">
+          Authorized ethical hacking and vulnerability assessments to protect your systems before someone else exploits them.
+        </div>
+        <ul class="srv-list">
           <li>Ethical Hacking</li>
-          <li>Web Application Security Testing</li>
-          <li>Network & Infrastructure Testing</li>
-          <li>API & Mobile App Security</li>
+          <li>Web Application Penetration Testing</li>
+          <li>Network &amp; Infrastructure Testing</li>
+          <li>API &amp; Mobile App Security</li>
           <li>Red Team Operations</li>
+          <li>Mobile Penetration Testing</li>
         </ul>
-        <span class="service-badge">Security</span>
+        <div class="srv-catch">Authorized &amp; Ethical</div>
       </div>
 
-      <!-- Card 6: Others -->
-      <div class="service-card">
-        <div class="service-num">06 // OTHER</div>
-        <div class="service-title">Specialized Services</div>
-        <div class="service-desc">Tailored digital and investigative support for cases that don't fit a box.</div>
-        <ul class="service-items">
-          <li>Digital Forensics & Evidence Recovery</li>
-          <li>Account Security & Breach Investigations</li>
+      <!-- 6: Other -->
+      <div class="srv">
+        <div class="srv-id">06 — Specialized</div>
+        <div class="srv-name">Other Investigative Services</div>
+        <div class="srv-caption">
+          Specialized digital and investigative support for situations that don't fit a standard category. If it's confidential and complex, we can help.
+        </div>
+        <ul class="srv-list">
+          <li>Digital Forensics &amp; Evidence Recovery</li>
+          <li>Account Security &amp; Breach Investigations</li>
+          <li>Scam &amp; Fraud Analysis</li>
           <li>Online Reputation Support</li>
-          <li>Data Recovery & Device Analysis</li>
+          <li>Data Recovery &amp; Device Analysis</li>
           <li>Business Security Advisory</li>
           <li>Discreet Truth-Verification Services</li>
         </ul>
-        <span class="service-badge">Specialized</span>
+        <div class="srv-catch">Specialized Case-by-Case Basis</div>
       </div>
 
     </div>
 
-    <div class="solutions-footer">
-      Need help with something not listed above? Describe your situation and we will determine the best approach.
-      <a href="#contact" class="btn-outline" style="margin-left: auto; white-space: nowrap; padding: 8px 16px; font-size: 12px;">→ Ask Us</a>
+    <div class="srv-footer">
+      <span>Need help with something not listed? <a href="#contact">Describe your situation</a> — we'll tell you if and how we can help.</span>
     </div>
   </div>
 </section>
 
-<!-- TRUST -->
-<section id="trust">
+<!-- WHY US -->
+<section id="why">
   <div class="container">
-    <div class="section-label">Why TruthScan</div>
-    <h2 class="trust-header"><span class="accent">Discreet.</span> Professional. <span class="accent">Results-Driven.</span></h2>
-    <p class="section-sub" style="margin-top: 0.75rem;">Your privacy is our priority. Every case is handled with strict confidentiality and a commitment to ethical, legal, and effective solutions.</p>
+    <div class="eyebrow">Why TruthScan</div>
+    <h2 class="sec-title"><span class="g">Discreet.</span> Professional. Results-Driven.</h2>
+    <p class="sec-sub">Your privacy is our priority. Every case is handled with strict confidentiality and a commitment to ethical, legal, and effective solutions.</p>
 
-    <div class="trust-grid">
-      <div class="trust-card">
-        <div class="trust-icon">⬡</div>
-        <div class="trust-name">Proven Expertise</div>
-        <div class="trust-desc">Years of hands-on experience in ethical hacking, cybersecurity, and digital investigations across complex real-world cases.</div>
-        <div class="trust-status">Status: Active & Operational</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">🔒</div>
+        <div class="why-title">Proven Expertise</div>
+        <div class="why-body">Years of hands-on experience in ethical hacking, cybersecurity, digital surveillance, and real-world investigations across hundreds of cases.</div>
+        <div class="live-dot">Actively Operational</div>
       </div>
-      <div class="trust-card">
-        <div class="trust-icon">◈</div>
-        <div class="trust-name">Global Reach</div>
-        <div class="trust-desc">We work with clients from anywhere in the world. Distance is never a barrier to getting the truth.</div>
-        <div class="trust-status">Status: Worldwide Coverage</div>
+      <div class="why-card">
+        <div class="why-icon">🌐</div>
+        <div class="why-title">Global Reach</div>
+        <div class="why-body">We work with clients from anywhere in the world. No matter where you are or where the subject is, distance is never a barrier.</div>
+        <div class="live-dot">Worldwide Coverage</div>
       </div>
-      <div class="trust-card">
-        <div class="trust-icon">⬛</div>
-        <div class="trust-name">Complete Confidentiality</div>
-        <div class="trust-desc">Your information and case details remain private and secure at every stage. We never disclose client information.</div>
-        <div class="trust-status">Status: Encrypted & Secured</div>
+      <div class="why-card">
+        <div class="why-icon">🛡</div>
+        <div class="why-title">Complete Confidentiality</div>
+        <div class="why-body">Your information and case details remain private and secure at every stage. We never disclose client details — your case stays between us.</div>
+        <div class="live-dot">Fully Encrypted</div>
       </div>
-      <div class="trust-card">
-        <div class="trust-icon">◇</div>
-        <div class="trust-name">Tailored Solutions</div>
-        <div class="trust-desc">Every challenge is unique and so is our approach. We design a strategy specific to your case, not a generic template.</div>
-        <div class="trust-status">Status: Case-by-Case Basis</div>
+      <div class="why-card">
+        <div class="why-icon">🎯</div>
+        <div class="why-title">Tailored Solutions</div>
+        <div class="why-body">Every situation is different and so is our approach. We design a specific strategy for your case — no templates, no guesswork.</div>
+        <div class="live-dot">Case-by-Case Approach</div>
       </div>
     </div>
   </div>
@@ -1245,73 +765,78 @@
 <!-- HOW IT WORKS -->
 <section id="how">
   <div class="container">
-    <div class="section-label">Process</div>
-    <h2 class="section-title">How It Works</h2>
-    <p class="section-sub">Four steps from your first message to a resolved case.</p>
+    <div class="eyebrow">Process</div>
+    <h2 class="sec-title">How It <span class="g">Works</span></h2>
+    <p class="sec-sub">Simple, secure, and straightforward — from your first message to a resolved case.</p>
 
-    <div class="steps">
+    <div class="steps-row">
       <div class="step">
-        <div class="step-num">01</div>
-        <div class="step-title">Reach Out</div>
-        <div class="step-desc">Contact us through Telegram or our secure form. Briefly describe your situation — no details are too sensitive.</div>
+        <div class="step-n">1</div>
+        <div class="step-title">Contact Us</div>
+        <div class="step-body">Reach out through Telegram or our secure contact form. Briefly describe your challenge — no detail is too sensitive for us to hear.</div>
       </div>
       <div class="step">
-        <div class="step-num">02</div>
+        <div class="step-n">2</div>
         <div class="step-title">Confidential Review</div>
-        <div class="step-desc">We assess your situation and determine the most effective, legal, and ethical approach for your case.</div>
+        <div class="step-body">We carefully assess your situation and determine the best legal and ethical approach to resolving your case.</div>
       </div>
       <div class="step">
-        <div class="step-num">03</div>
-        <div class="step-title">Custom Solution</div>
-        <div class="step-desc">We build and execute a tailored investigation strategy designed to resolve your issue effectively and discreetly.</div>
+        <div class="step-n">3</div>
+        <div class="step-title">Customized Solution</div>
+        <div class="step-body">We build and execute a tailored investigation strategy, providing expert assistance designed to resolve your issue effectively.</div>
       </div>
       <div class="step">
-        <div class="step-num">04</div>
+        <div class="step-n">4</div>
         <div class="step-title">Ongoing Support</div>
-        <div class="step-desc">We stay with you until the matter is fully resolved. You are never left without answers or guidance.</div>
+        <div class="step-body">We stay with you until the matter is fully resolved. You are never left without answers, clarity, or next steps.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- INDUSTRIES -->
-<section id="industries">
+<!-- WHO WE HELP -->
+<section id="who">
   <div class="container">
-    <div class="section-label">Who We Serve</div>
-    <h2 class="section-title">Industries & Clients</h2>
-    <p class="section-sub">TruthScan works with individuals and organizations across all sectors.</p>
+    <div class="eyebrow">Who We Help</div>
+    <h2 class="sec-title">Industries &amp; <span class="g">Clients We Serve</span></h2>
+    <p class="sec-sub">TruthScan works with individuals and organizations across all sectors and walks of life.</p>
   </div>
-  <div class="ticker-wrap">
-    <div class="ticker" id="ticker">
-      <div class="ticker-item">Individuals</div>
-      <div class="ticker-item">Small Businesses</div>
-      <div class="ticker-item">Startups</div>
-      <div class="ticker-item">Corporate Organizations</div>
-      <div class="ticker-item">Legal Professionals</div>
-      <div class="ticker-item">Real Estate Companies</div>
-      <div class="ticker-item">Online Entrepreneurs</div>
-      <div class="ticker-item">Students</div>
-      <div class="ticker-item">Individuals</div>
-      <div class="ticker-item">Small Businesses</div>
-      <div class="ticker-item">Startups</div>
-      <div class="ticker-item">Corporate Organizations</div>
-      <div class="ticker-item">Legal Professionals</div>
-      <div class="ticker-item">Real Estate Companies</div>
-      <div class="ticker-item">Online Entrepreneurs</div>
-      <div class="ticker-item">Students</div>
+  <div class="ticker-outer">
+    <div class="ticker-inner">
+      <div class="tick">Individuals</div>
+      <div class="tick">Small Businesses</div>
+      <div class="tick">Startups</div>
+      <div class="tick">Corporate Organizations</div>
+      <div class="tick">Legal Professionals</div>
+      <div class="tick">Real Estate Companies</div>
+      <div class="tick">Online Entrepreneurs</div>
+      <div class="tick">Students</div>
+      <!-- duplicate for seamless loop -->
+      <div class="tick">Individuals</div>
+      <div class="tick">Small Businesses</div>
+      <div class="tick">Startups</div>
+      <div class="tick">Corporate Organizations</div>
+      <div class="tick">Legal Professionals</div>
+      <div class="tick">Real Estate Companies</div>
+      <div class="tick">Online Entrepreneurs</div>
+      <div class="tick">Students</div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
-<section id="cta">
+<!-- CTA BAND -->
+<section id="cta-band">
   <div class="container">
-    <div class="cta-terminal">[ SECURE CHANNEL AVAILABLE ]</div>
-    <h2 class="cta-title">Got a Complex Problem?<br><span class="accent">We're Ready to Scan.</span></h2>
-    <p class="cta-sub">Whether you suspect a cheating partner, need digital investigation, or are dealing with fraud — TruthScan is here to help. Contact us securely and get expert assistance today.</p>
-    <div class="cta-btns">
-      <a href="#contact" class="btn-primary">⟶ Start a Confidential Case</a>
-      <a href="#contact" class="btn-outline">Get Confidential Assistance</a>
+    <div class="cta-label">[ Secure Channel Available ]</div>
+    <h2 class="cta-h">
+      Need Help With a<br><span class="g">Complex Problem?</span>
+    </h2>
+    <p class="cta-p">
+      Whether you are dealing with a suspected cheating partner, cybersecurity concerns, or need a digital investigation — TruthScan is here to help. Contact us securely on Telegram and get expert assistance today.
+    </p>
+    <div class="cta-row">
+      <a href="#contact" class="btn-solid">Contact Us Now →</a>
+      <a href="#contact" class="btn-ghost">Get Confidential Assistance</a>
     </div>
   </div>
 </section>
@@ -1319,38 +844,38 @@
 <!-- BLOG -->
 <section id="blog">
   <div class="container">
-    <div class="section-label">Insights</div>
-    <h2 class="section-title">Intelligence Reports</h2>
-    <p class="section-sub">Expert articles on digital investigations, fraud prevention, relationship security, and online safety.</p>
+    <div class="eyebrow">Insights &amp; Updates</div>
+    <h2 class="sec-title">Our <span class="g">Blog</span></h2>
+    <p class="sec-sub">Expert articles on cybersecurity, digital investigations, fraud prevention, and online safety.</p>
 
     <div class="blog-grid">
-      <div class="blog-card">
-        <img class="blog-img" src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&q=80" alt="Crypto Scam Investigation">
-        <div class="blog-body">
-          <div class="blog-meta"><span class="cat">Fraud Investigation</span> &nbsp;·&nbsp; Jan 2021</div>
-          <div class="blog-title">Cryptocurrency & Investment Scam Investigations: What to Do If You Have Been Defrauded</div>
-          <div class="blog-excerpt">The rise of crypto and online investment platforms has opened the door for sophisticated scammers. Here is how to fight back and trace what was taken from you.</div>
-          <a href="#" class="blog-link">Read Report</a>
+      <div class="bcard">
+        <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&q=80" alt="Crypto Scam Investigation">
+        <div class="bcard-body">
+          <div class="bcard-meta"><span>Fraud &amp; Scam Investigation</span> &nbsp;·&nbsp; 1 Jan 2021</div>
+          <div class="bcard-title">Cryptocurrency and Investment Scam Investigations: What to Do If You Have Been Defrauded</div>
+          <div class="bcard-snip">The rise of cryptocurrency and online investment platforms has created exciting opportunities — but also opened the door to sophisticated scammers. Here is what to do.</div>
+          <a href="#" class="bcard-link">Read article</a>
         </div>
       </div>
 
-      <div class="blog-card">
-        <img class="blog-img" src="https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?w=800&q=80" alt="Cheating Partner Investigation">
-        <div class="blog-body">
-          <div class="blog-meta"><span class="cat">Relationship Intel</span> &nbsp;·&nbsp; Mar 2021</div>
-          <div class="blog-title">How to Know If Your Partner Is Hiding Something — And What to Do About It</div>
-          <div class="blog-excerpt">Digital behaviour leaves traces. Knowing the signs and what steps to take when you suspect infidelity can make the difference between doubt and certainty.</div>
-          <a href="#" class="blog-link">Read Report</a>
+      <div class="bcard">
+        <img src="https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?w=800&q=80" alt="Cheating Partner Signs">
+        <div class="bcard-body">
+          <div class="bcard-meta"><span>Relationship &amp; Surveillance</span> &nbsp;·&nbsp; 15 Mar 2021</div>
+          <div class="bcard-title">Signs Your Partner May Be Cheating — And What You Can Do About It</div>
+          <div class="bcard-snip">Unexplained absences, secretive phone habits, sudden changes in behaviour — when doubt creeps in, here is how professional surveillance can give you real answers.</div>
+          <a href="#" class="bcard-link">Read article</a>
         </div>
       </div>
 
-      <div class="blog-card">
-        <img class="blog-img" src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&q=80" alt="Online Fraud Prevention">
-        <div class="blog-body">
-          <div class="blog-meta"><span class="cat">Cybersecurity</span> &nbsp;·&nbsp; Jun 2021</div>
-          <div class="blog-title">Romance Scams Are Surging — Here Is How They Work and How to Protect Yourself</div>
-          <div class="blog-excerpt">Romance scammers use emotional manipulation and fabricated identities to extract money and personal data. We break down the playbook and how investigations recover the truth.</div>
-          <a href="#" class="blog-link">Read Report</a>
+      <div class="bcard">
+        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&q=80" alt="Romance Scam">
+        <div class="bcard-body">
+          <div class="bcard-meta"><span>Fraud &amp; Online Safety</span> &nbsp;·&nbsp; 10 Jun 2021</div>
+          <div class="bcard-title">How Romance Scammers Operate — And How Investigations Expose Them</div>
+          <div class="bcard-snip">Romance scams are surging globally. Scammers use fake identities and emotional manipulation to steal money. We break down how these operations work and how we trace them.</div>
+          <a href="#" class="bcard-link">Read article</a>
         </div>
       </div>
     </div>
@@ -1360,73 +885,71 @@
 <!-- CONTACT -->
 <section id="contact">
   <div class="container">
-    <div class="section-label">Contact</div>
-    <h2 class="section-title">Establish Secure Contact</h2>
-    <p class="section-sub">Your message is handled with complete confidentiality. We respond within 24 hours.</p>
+    <div class="eyebrow">Get in Touch</div>
+    <h2 class="sec-title">Speak to an <span class="g">Expert Now</span></h2>
+    <p class="sec-sub">Your message is handled with absolute confidentiality. We respond within 24 hours.</p>
 
-    <div class="contact-wrap">
-      <div class="contact-info">
+    <div class="contact-grid">
+      <div class="contact-side">
         <h3>Secure Channels</h3>
-        <p>Reach us through any of the channels below. For the fastest response and maximum privacy, Telegram is recommended.</p>
-        <div class="contact-method">
-          <div class="method-item">
-            <div class="method-icon">✈</div>
-            <div class="method-text">
-              <strong>Telegram</strong>
-              Fastest response · Maximum privacy
-            </div>
-          </div>
-          <div class="method-item">
-            <div class="method-icon">⟶</div>
-            <div class="method-text">
-              <strong>Secure Form</strong>
-              Use the form below · Response within 24 hours
-            </div>
+        <p>Reach out through Telegram for the fastest and most private response, or use the form. All communications are treated as strictly confidential from the moment you make contact.</p>
+
+        <div class="channel">
+          <div class="ch-icon">✈</div>
+          <div class="ch-info">
+            <strong>Telegram</strong>
+            Fastest response · Maximum privacy · Encrypted
           </div>
         </div>
-        <div style="padding: 1.25rem; border: 1px solid var(--border); background: var(--bg);">
-          <div style="font-family: var(--mono); font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem;">Fast Response</div>
-          <p style="font-size: 13px; color: var(--text-muted); font-weight: 300; margin: 0;">Connect directly through Telegram for immediate and confidential assistance. Your conversation is encrypted end-to-end.</p>
+
+        <div class="channel">
+          <div class="ch-icon">✉</div>
+          <div class="ch-info">
+            <strong>Secure Contact Form</strong>
+            Fill in the form → response within 24 hours
+          </div>
+        </div>
+
+        <div class="resp-note">
+          Connect directly through Telegram for immediate assistance. Fast response, fully confidential.
         </div>
       </div>
 
       <div>
-        <div class="form-success" id="form-success">
-          ✓ Message received. We will be in touch within 24 hours. Stay secure.
-        </div>
+        <div class="form-ok" id="form-ok">✓ Message received. We will be in touch within 24 hours.</div>
         <form class="contact-form" id="contact-form" action="https://formspree.io/f/meedbokp" method="POST">
-          <div class="form-row">
+          <div class="field-row">
             <div class="field">
-              <label for="fname">First Name</label>
-              <input type="text" id="fname" name="first_name" placeholder="Your first name" required>
+              <label for="fn">First Name</label>
+              <input type="text" id="fn" name="first_name" placeholder="Your first name" required>
             </div>
             <div class="field">
-              <label for="lname">Last Name</label>
-              <input type="text" id="lname" name="last_name" placeholder="Your last name">
+              <label for="ln">Last Name</label>
+              <input type="text" id="ln" name="last_name" placeholder="Your last name">
             </div>
           </div>
           <div class="field">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" placeholder="your@email.com" required>
+            <label for="em">Email Address</label>
+            <input type="email" id="em" name="email" placeholder="your@email.com" required>
           </div>
           <div class="field">
-            <label for="service">Service Needed</label>
-            <select id="service" name="service">
+            <label for="svc">What Do You Need Help With?</label>
+            <select id="svc" name="service">
               <option value="">— Select a service —</option>
-              <option>Partner & Relationship Investigation</option>
-              <option>OSINT & Digital Investigation</option>
-              <option>Fraud & Scam Investigation</option>
+              <option>Catch a Cheating Partner</option>
               <option>Private Investigator Services</option>
+              <option>OSINT &amp; Digital Investigation</option>
+              <option>Fraud &amp; Scam Investigation</option>
               <option>Penetration Testing</option>
               <option>Other / Not Sure</option>
             </select>
           </div>
           <div class="field">
-            <label for="message">Describe Your Situation</label>
-            <textarea id="message" name="message" placeholder="Briefly describe your case. All details remain strictly confidential." required></textarea>
+            <label for="msg">Describe Your Situation</label>
+            <textarea id="msg" name="message" placeholder="Tell us what's going on. All details are handled in strict confidence." required></textarea>
           </div>
-          <div class="form-encrypt">All submissions are encrypted and handled in strict confidence</div>
-          <button type="submit" class="btn-primary" style="align-self: flex-start; margin-top: 0.5rem;">⟶ Send Secure Message</button>
+          <div class="enc-note">All submissions are encrypted and handled in strict confidence</div>
+          <button type="submit" class="btn-solid" style="align-self: flex-start; margin-top: 0.25rem; border: none;">Send Message →</button>
         </form>
       </div>
     </div>
@@ -1435,57 +958,45 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-inner">
-    <div>
-      <div class="footer-logo">TruthScan</div>
-      <div class="footer-tagline">We Find What Others Can't — Solving Complex Problems with Technology and Trust</div>
+  <div class="foot-inner">
+    <div class="foot-brand">
+      <div class="foot-name">TruthScan</div>
+      <div class="foot-tag">Solving Complex Problems with Technology and Trust</div>
     </div>
-    <ul class="footer-links">
-      <li><a href="#solutions">Solutions</a></li>
+    <ul class="foot-links">
+      <li><a href="#services">Services</a></li>
       <li><a href="#how">How It Works</a></li>
-      <li><a href="#blog">Insights</a></li>
+      <li><a href="#blog">Blog</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
-    <div class="footer-copy">
-      <span>© 2024 TruthScan. All rights reserved. All investigations conducted ethically and legally.</span>
-      <span style="font-family: var(--mono); font-size: 11px; color: var(--text-dim);">[ SECURE · CONFIDENTIAL · DISCREET ]</span>
+    <div class="foot-copy">
+      <span>© 2024 TruthScan. All rights reserved. All investigations are conducted ethically and legally.</span>
+      <span>Discreet · Confidential · Professional</span>
     </div>
   </div>
 </footer>
 
 <script>
-  function toggleMenu() {
-    document.getElementById('nav-links').classList.toggle('open');
-  }
+function toggleNav() {
+  document.getElementById('nav-links').classList.toggle('open');
+}
+document.querySelectorAll('a[href^="#"]').forEach(a =>
+  a.addEventListener('click', () => document.getElementById('nav-links').classList.remove('open'))
+);
 
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', () => {
-      document.getElementById('nav-links').classList.remove('open');
+const form = document.getElementById('contact-form');
+const ok   = document.getElementById('form-ok');
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  try {
+    const r = await fetch(form.action, {
+      method: 'POST', body: new FormData(form),
+      headers: { Accept: 'application/json' }
     });
-  });
-
-  const form = document.getElementById('contact-form');
-  const success = document.getElementById('form-success');
-
-  if (form) {
-    form.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const data = new FormData(form);
-      try {
-        const res = await fetch(form.action, {
-          method: 'POST',
-          body: data,
-          headers: { 'Accept': 'application/json' }
-        });
-        if (res.ok) {
-          form.style.display = 'none';
-          success.style.display = 'block';
-        }
-      } catch(err) {
-        alert('Error sending message. Please try again.');
-      }
-    });
-  }
+    if (r.ok) { form.style.display = 'none'; ok.style.display = 'block'; }
+    else alert('Something went wrong. Please try again.');
+  } catch { alert('Connection error. Please try again.'); }
+});
 </script>
 
 </body>
