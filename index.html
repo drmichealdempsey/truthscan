@@ -105,15 +105,18 @@ nav {
   padding: 100px 2rem 70px;
   position: relative;
   overflow: hidden;
+  background:
+    linear-gradient(to right, rgba(7,10,9,0.97) 40%, rgba(7,10,9,0.6) 100%),
+    url('https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=1600&q=80') center/cover no-repeat;
 }
 
-/* dot grid bg */
+/* dot grid overlay */
 #home::before {
   content: '';
   position: absolute; inset: 0;
-  background-image: radial-gradient(circle, rgba(0,230,118,0.08) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(0,230,118,0.06) 1px, transparent 1px);
   background-size: 40px 40px;
-  mask-image: radial-gradient(ellipse 70% 80% at 50% 50%, black 0%, transparent 100%);
+  pointer-events: none;
 }
 
 .hero-wrap {
@@ -282,8 +285,65 @@ section { padding: 90px 2rem; }
 .srv-footer a { color: var(--green); text-decoration: none; }
 .srv-footer a:hover { text-decoration: underline; }
 
+/* ── IMAGE STRIP ── */
+.img-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  height: 260px;
+}
+.img-strip-item {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(50%) brightness(0.55);
+  transition: filter .4s, flex .4s;
+  overflow: hidden;
+  cursor: default;
+}
+.img-strip-item:hover {
+  filter: grayscale(10%) brightness(0.75);
+  z-index: 1;
+}
+.img-strip-item::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,230,118,0.18) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity .4s;
+}
+.img-strip-item:hover::before { opacity: 1; }
+.img-strip-label {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 12px 16px;
+  background: linear-gradient(to top, rgba(7,10,9,0.9), transparent);
+  font-family: var(--mono); font-size: 11px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--green);
+  transform: translateY(4px); opacity: 0;
+  transition: opacity .35s, transform .35s;
+}
+.img-strip-item:hover .img-strip-label { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 720px) {
+  .img-strip { grid-template-columns: repeat(2, 1fr); height: 320px; }
+}
+
 /* ── WHY US ── */
-#why { background: var(--bg); }
+#why {
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+}
+#why::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(7,10,9,1) 0%, rgba(7,10,9,0.75) 50%, rgba(7,10,9,1) 100%),
+    url('https://images.unsplash.com/photo-1510511459019-5dda7724fd87?w=1600&q=80') center/cover no-repeat;
+  pointer-events: none;
+}
+#why .container { position: relative; z-index: 1; }
 
 .why-grid {
   display: grid;
@@ -314,7 +374,11 @@ section { padding: 90px 2rem; }
 }
 
 /* ── HOW IT WORKS ── */
-#how { background: var(--bg2); }
+#how {
+  background:
+    linear-gradient(rgba(11,16,13,0.96), rgba(11,16,13,0.96)),
+    url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1600&q=80') center/cover no-repeat;
+}
 
 .steps-row {
   display: grid;
@@ -365,7 +429,9 @@ section { padding: 90px 2rem; }
 
 /* ── CTA BAND ── */
 #cta-band {
-  background: var(--bg2);
+  background:
+    linear-gradient(rgba(7,10,9,0.88), rgba(7,10,9,0.88)),
+    url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1600&q=80') center/cover no-repeat;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   padding: 80px 2rem;
@@ -418,7 +484,11 @@ section { padding: 90px 2rem; }
 .bcard-link::after { content: '→'; }
 
 /* ── CONTACT ── */
-#contact { background: var(--bg2); }
+#contact {
+  background:
+    linear-gradient(rgba(11,16,13,0.97), rgba(11,16,13,0.97)),
+    url('https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=1600&q=80') center/cover no-repeat;
+}
 
 .contact-grid {
   display: grid; grid-template-columns: 1fr 1.3fr;
@@ -726,6 +796,22 @@ footer {
   </div>
 </section>
 
+<!-- VISUAL STRIP -->
+<div class="img-strip">
+  <div class="img-strip-item" style="background-image: url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80')">
+    <div class="img-strip-label">Relationship Surveillance</div>
+  </div>
+  <div class="img-strip-item" style="background-image: url('https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=600&q=80')">
+    <div class="img-strip-label">Digital Investigation</div>
+  </div>
+  <div class="img-strip-item" style="background-image: url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=600&q=80')">
+    <div class="img-strip-label">Fraud & Scam Tracing</div>
+  </div>
+  <div class="img-strip-item" style="background-image: url('https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=600&q=80')">
+    <div class="img-strip-label">Private Investigation</div>
+  </div>
+</div>
+
 <!-- WHY US -->
 <section id="why">
   <div class="container">
@@ -860,7 +946,7 @@ footer {
       </div>
 
       <div class="bcard">
-        <img src="https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?w=800&q=80" alt="Cheating Partner Signs">
+        <img src="https://images.unsplash.com/photo-1494774157365-9e04c6720e47?w=800&q=80" alt="Relationship Surveillance">
         <div class="bcard-body">
           <div class="bcard-meta"><span>Relationship &amp; Surveillance</span> &nbsp;·&nbsp; 15 Mar 2021</div>
           <div class="bcard-title">Signs Your Partner May Be Cheating — And What You Can Do About It</div>
@@ -870,7 +956,7 @@ footer {
       </div>
 
       <div class="bcard">
-        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&q=80" alt="Romance Scam">
+        <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80" alt="Romance Scam Investigation">
         <div class="bcard-body">
           <div class="bcard-meta"><span>Fraud &amp; Online Safety</span> &nbsp;·&nbsp; 10 Jun 2021</div>
           <div class="bcard-title">How Romance Scammers Operate — And How Investigations Expose Them</div>
