@@ -1350,10 +1350,10 @@ form.addEventListener('submit', async e => {
 <script>
 (function() {
 
-  /* ── CONFIG — replace these two values ── */
-  const OPENAI_KEY    = 'YOUR_OPENAI_API_KEY_HERE';
-  const FORMSPREE_ID  = 'meedbokp';
-  /* ──────────────────────────────────────── */
+  /* ── CONFIG ── */
+  const FORMSPREE_ID = 'meedbokp';
+  /* No API key here — it lives safely in Vercel environment variables */
+  /* ──────────── */
 
   const SYSTEM_PROMPT = `You are VERA, a warm, empathetic, and highly professional confidential assistant for TruthScan — a private investigation and digital intelligence service. Your job is to engage visitors, understand their situation, and collect their contact details so a human investigator can follow up.
 
@@ -1470,16 +1470,10 @@ RULES:
     const typingEl = showTyping();
 
     try {
-      const res = await fetch('https://api.openai.com/v1/chat/completions', {
+      const res = await fetch('/api/chat', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${OPENAI_KEY}`
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'gpt-4o-mini',
-          max_tokens: 300,
-          temperature: 0.7,
           messages: [
             { role: 'system', content: SYSTEM_PROMPT },
             ...history
