@@ -13,8 +13,10 @@ export default async function handler(req) {
   /* block requests not coming from your own domain */
   const origin = req.headers.get('origin') || '';
   const allowed = [
-    'https://truthscan.vercel.app',   /* replace with your actual domain */
-    'http://localhost:3000',           /* for local testing */
+    'https://cheattrace.com',          /* production domain */
+    'https://www.cheattrace.com',      /* www version */
+    'https://truthscan-xi.vercel.app', /* current Vercel deployment */
+    'http://localhost:3000',           /* local testing */
     'http://127.0.0.1:5500'           /* VS Code Live Server */
   ];
   if (!allowed.includes(origin)) {
