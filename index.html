@@ -997,6 +997,14 @@ footer {
           </div>
         </div>
 
+        <div class="channel">
+          <div class="ch-icon">✉</div>
+          <div class="ch-info">
+            <strong>Email</strong>
+            <a href="mailto:admin@cheattrace.com">admin@cheattrace.com · Direct inquiries</a>
+          </div>
+        </div>
+
         <div class="resp-note">
           Connect directly through Telegram for immediate assistance. Fast response, fully confidential.
         </div>
@@ -1058,6 +1066,7 @@ footer {
     </ul>
     <div class="foot-copy">
       <span>© 2024 CheatTrace. All rights reserved. All investigations are conducted ethically and legally.</span>
+      <span><a href="mailto:admin@cheattrace.com">admin@cheattrace.com</a></span>
       <span>Discreet · Confidential · Professional</span>
     </div>
   </div>
@@ -1352,6 +1361,9 @@ form.addEventListener('submit', async e => {
 (function() {
 
   /* ── CONFIG ── */
+  /* Leads currently route to Formspree form xkolgbbg, which forwards to drmichealdempsey@gmail.com. */
+  /* To switch lead delivery to admin@cheattrace.com instead, update the notification email */
+  /* in the Formspree dashboard for this form — no code change needed here. */
   const FORMSPREE_ID = 'xkolgbbg';
   /* No API key here — it lives safely in Vercel environment variables */
   /* ──────────── */
