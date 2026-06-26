@@ -1598,6 +1598,14 @@ RULES:
 
   /* ── show lead collected card in chat ── */
   function showLeadCard(lead) {
+    if (typeof gtag === 'function') {
+      gtag('event', 'conversion', {
+        'send_to': 'AW-18273503345/8TJMCLSEzMUcEPGQvolE',
+        'value': 1.0,
+        'currency': 'USD'
+      });
+    }
+
     const card = document.createElement('div');
     card.className = 'vera-lead-card';
     card.innerHTML = `✓ Case noted &amp; investigator alerted<br>Name: ${lead.name}<br>We'll reach out to: ${lead.email}`;
