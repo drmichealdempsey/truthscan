@@ -1629,12 +1629,18 @@ RULES:
     fd.append('transcript', transcript);
 
     try {
-      await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
         method: 'POST', body: fd,
         headers: { Accept: 'application/json' }
       });
+      if (!res.ok) {
+        const errText = await res.text();
+        console.error('Formspree rejected submission:', res.status, errText);
+      } else {
+        console.log('Formspree submission succeeded:', await res.json());
+      }
     } catch(e) {
-      console.warn('Formspree submit failed:', e);
+      console.error('Formspree submit network error:', e);
     }
   }
 
