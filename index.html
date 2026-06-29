@@ -1548,6 +1548,7 @@ RULES:
         leadSent = true;
         try {
           const lead = JSON.parse(leadMatch[1]);
+          console.log('Parsed lead object before submission:', lead);
           await submitLead(lead, history);
           showLeadCard(lead);
         } catch(e) {
